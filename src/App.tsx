@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.scss';
-// import { Clock } from './Clock';
+import { Clock } from './Clock';
 
 export type State = {
   today: Date;
@@ -41,12 +41,14 @@ export class App extends React.Component<{}, State> {
 
   componentDidMount(): void {
     this.timerId = window.setInterval(() => {
+      if (!this.state.hasClock) {
+        return;
+      }
+
       const newTime = new Date();
 
-      if (this.state.hasClock) {
-        // eslint-disable-next-line no-console
-        console.log(`${newTime}`);
-      }
+      // eslint-disable-next-line no-console
+      console.log(`${newTime}`);
 
       this.setState({
         today: newTime,
@@ -54,12 +56,14 @@ export class App extends React.Component<{}, State> {
     }, 1000);
 
     this.clockId = window.setInterval(() => {
+      if (!this.state.hasClock) {
+        return;
+      }
+
       const newName = this.getRandomName();
 
-      if (this.state.hasClock) {
-        // eslint-disable-next-line no-console
-        console.log(`Renamed from ${this.state.clockName} to ${newName}`);
-      }
+      // eslint-disable-next-line no-console
+      console.log(`Renamed from ${this.state.clockName} to ${newName}`);
 
       this.setState({ clockName: newName });
     }, 3300);
@@ -87,17 +91,7 @@ export class App extends React.Component<{}, State> {
     return (
       <div className="App">
         <h1>React clock</h1>
-        {hasClock && (
-          <div className="Clock">
-            <strong className="Clock__name">{clockName}</strong>
-
-            {' time is '}
-
-            <span className="Clock__time">
-              {`${today.toUTCString().slice(-12, -4)}`}
-            </span>
-          </div>
-        )}
+        {hasClock && <Clock today={today} clockName={clockName} />}
       </div>
     );
   }
