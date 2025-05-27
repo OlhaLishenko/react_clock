@@ -19,7 +19,7 @@ export class App extends React.Component<{}, State> {
 
   clockId: number | undefined;
 
-  handleHideClock = (event: MouseEvent) => {
+  handleHideClock = (event: React.MouseEvent) => {
     event.preventDefault();
 
     this.setState({
